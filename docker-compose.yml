@@ -1,0 +1,52 @@
+## sudo docker build . -f Dockerfile -t localhost/hubot_slack
+version: "2"
+services:
+  redis:
+    image: redis
+    volumes:
+      - /srv/hubot-slack/redis:/data
+  prod:
+    image: localhost/hubot_slack
+    env_file: .env
+    environment:
+      BIRTHDAY_CRON_STRING: 0 10 * * *
+      HUBOT_LOG_LEVEL: debug
+      HUBOT_NAME: clippy
+      REDIS_URL: redis://redis:6379
+      DISCORDIFY_RANCHER_DATA: '{"rollingRestartStrategy":""}'
+      DISCORDIFY_TEMPLATE_FILE: /opt/hubot/discordify/matterbridge.toml.ejs
+      DISCORDIFY_TOML_FILE: /matterbridge.toml
+    stdin_open: true
+    volumes:
+      - /srv/hubot-slack/scripts:/opt/hubot/scripts
+      - /srv/matterbridge/matterbridge.toml:/matterbridge.toml
+    tty: true
+    links:
+      - redis:redis
+#    secrets:
+#    - DISCORD_TOKEN
+#    - mode: '0444'
+#      uid: '0'
+#      gid: '0'
+#      source: RANCHER_ACCESS_KEY
+#      target: RANCHER_ACCESS_KEY
+#    - mode: '0444'
+#      uid: '0'
+#      gid: '0'
+#      source: RANCHER_SECRET_KEY
+#      target: RANCHER_SECRET_KEY
+#    - mode: '0444'
+#      uid: '0'
+#      gid: '0'
+#      source: SLACK_TOKEN
+#      target: SLACK_TOKEN
+# secrets:
+# RANCHER_SECRET_KEY:
+# external: 'true'
+# SLACK_TOKEN:
+# external: 'true'
+# DISCORD_TOKEN:
+# external: 'true'
+# RANCHER_ACCESS_KEY:
+# external: 'true'
+

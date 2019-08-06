@@ -1,0 +1,7 @@
+node_modules
+.DS_Store*
+.hubot_history
+.env
+discordify/matterbridge.toml
+discordify/matterbridge.toml.ejs
+redis/dump.rdb

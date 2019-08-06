@@ -1,0 +1,38 @@
+[slack]
+[slack.vlt]
+Token="<%= secrets.slack %>"
+PrefixMessagesWithNick=false
+IconURL="https://robohash.org/bridge-bot.png?size=48x48"
+EditSuffix=" (edited)"
+RemoteNickFormat="{NICK}@{LABEL}{PROTOCOL}"
+
+[discord]
+[discord.vlt]
+Token="<%= secrets.bridge %>"
+Server="Volunteer Live Team"
+ShowEmbeds=true
+UseUserName=true
+EditSuffix=" (edited)"
+RemoteNickFormat="<{NICK}:{LABEL}> "
+
+[discord.tropicalweather]
+Token="<%= secrets.bridge %>"
+Label="TropicalWeather:"
+Server="/r/TropicalWeather"
+ShowEmbeds=true
+UseUserName=true
+EditSuffix=" (edited)"
+RemoteNickFormat="<{NICK}@vlt({PROTOCOL})> "
+
+<% gateways.forEach(function(gateway) { %>
+[[gateway]]
+    name="discordify-<%= gateway.slack %>-<%= gateway.discord %>"
+    enable=<%= gateway.enable || true %>
+        [[gateway.inout]]
+        account="discord.vlt"
+        channel="ID:<%= gateway.discord %>"
+        [[gateway.inout]]
+        account="slack.vlt"
+        channel="<%= gateway.slack %>"
+        
+<% }); %>
